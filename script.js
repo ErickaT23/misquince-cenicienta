@@ -16,12 +16,12 @@ async function cargarInvitados() {
 function renderizarEnlaces() {
   const ul = document.getElementById('lista-invitados');
   if (!ul) return;
-  ul.innerHTML = ''; // Limpia contenido previo
+  ul.innerHTML = '';
 
   invitados.forEach(inv => {
     const li = document.createElement('li');
-    const a  = document.createElement('a');
-    a.href        = `${window.location.pathname}?id=${encodeURIComponent(inv.id)}`;
+    const a = document.createElement('a');
+    a.href = `${window.location.pathname}?id=${encodeURIComponent(inv.id)}`;
     a.textContent = `${inv.nombre} ${inv.frase}`;
     a.style.textDecoration = 'none';
     li.appendChild(a);
@@ -29,74 +29,79 @@ function renderizarEnlaces() {
   });
 }
 
-// 3. Mostrar datos del invitado actual (según ?id=)
+// 3. Mostrar datos del invitado actual (según ?id=) y autoabrir invitación
 function cargarDatosInvitado() {
-  const params     = new URLSearchParams(window.location.search);
+  const params = new URLSearchParams(window.location.search);
   const invitadoId = params.get('id');
-
-  if (!invitadoId) {
-    return; // No mostrar alerta para administradores
-  }
+  if (!invitadoId) return;
 
   const invitado = invitados.find(i => i.id === invitadoId);
   if (invitado) {
     document.getElementById('nombreInvitado').innerText = invitado.nombre;
     document.getElementById('cantidadPases').innerText = `Pases: ${invitado.pases}`;
+    abrirInvitacion(); // Auto-abre la invitación si ID válido
   } else {
     alert('Invitado no encontrado.');
   }
 }
 
-// 4. Lógica de apertura de invitación y reproducción de música
+// 4. Función para abrir la invitación (sobre) y reproducir la música
 function abrirInvitacion() {
-  const envelope  = document.getElementById('envelope');
+  const envelope = document.getElementById('envelope');
   const invitacion = document.getElementById('invitacion');
+  if (!envelope || !invitacion) return;
 
   envelope.classList.add('open');
   setTimeout(() => {
-    envelope.style.display     = 'none';
-    invitacion.style.display   = 'block';
+    envelope.style.display = 'none';
+    invitacion.style.display = 'block';
     document.getElementById('musica')?.play();
   }, 1000);
 }
 
-// 5. Contador regresivo al evento
+// 5. Iniciar el contador regresivo al evento
 function iniciarContador() {
   const eventoFecha = new Date('August 02, 2025 00:00:00').getTime();
-
   setInterval(() => {
-    const ahora     = Date.now();
-    const diff      = eventoFecha - ahora;
-    const dias      = Math.floor(diff / (1000*60*60*24));
-    const horas     = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    const minutos   = Math.floor((diff % (1000*60*60)) / (1000*60));
-    const segundos  = Math.floor((diff % (1000*60)) / 1000);
+    const ahora = Date.now();
+    const diff = eventoFecha - ahora;
+    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const segundos = Math.floor((diff % (1000 * 60)) / 1000);
 
-    document.getElementById('dias').innerText     = dias;
-    document.getElementById('horas').innerText    = horas;
-    document.getElementById('minutos').innerText  = minutos;
+    document.getElementById('dias').innerText = dias;
+    document.getElementById('horas').innerText = horas;
+    document.getElementById('minutos').innerText = minutos;
     document.getElementById('segundos').innerText = segundos;
   }, 1000);
 }
 
 // 6. Lightbox para galería
 function changePhoto(element) {
-  document.getElementById('main-photo-modal').src = element.src;
-  document.getElementById('photo-modal').style.display = 'flex';
+  const modalImg = document.getElementById('main-photo-modal');
+  if (modalImg) modalImg.src = element.src;
+  const modal = document.getElementById('photo-modal');
+  if (modal) modal.style.display = 'flex';
 }
 function closeModal(event) {
   if (!event || event.target.id === 'photo-modal' || event.target.classList.contains('close')) {
-    document.getElementById('photo-modal').style.display = 'none';
+    const modal = document.getElementById('photo-modal');
+    if (modal) modal.style.display = 'none';
   }
 }
 
 // 7. Confirmar asistencia vía WhatsApp
 function confirmarAsistencia() {
-  const nombre = document.getElementById('nombreInvitado').innerText || 'invitado';
-  const pases  = document.getElementById('cantidadPases').innerText.replace('Pases: ', '');
+  const nombre = document.getElementById('nombreInvitado')?.innerText || 'invitado';
+  const pasesText = document.getElementById('cantidadPases')?.innerText || '';
+  const pases = pasesText.replace('Pases: ', '');
   const mensaje = `Hola, soy ${nombre} y confirmo mi asistencia con ${pases} pases para la fiesta de quince años.`;
-  const telefono = '50247696714';
-  window.open(`https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensaje)}`, '_blank');
+  const telefono = '50236011737';
+  window.open(
+    `https://api.whatsapp.com/send?phone=${telefono}&text=${encodeURIComponent(mensaje)}`,
+    '_blank'
+  );
 }
 
 // 8. Enlaces de dirección para ceremonia y recepción
@@ -124,14 +129,13 @@ function initFadeInObserver() {
 }
 
 // Inicialización al cargar DOM
+// Inicialización al cargar el DOM
 document.addEventListener('DOMContentLoaded', async () => {
-  await cargarInvitados();
-  iniciarContador();
-  cargarDatosInvitado();
-  renderizarEnlaces();
-  initFadeInObserver();
-
-  // Evento click para abrir invitación
-  document.getElementById('seal')?.addEventListener('click', abrirInvitacion);
-});
+    await cargarInvitados();
+    iniciarContador();
+    cargarDatosInvitado();
+    renderizarEnlaces();
+    initFadeInObserver();
+    document.getElementById('seal')?.addEventListener('click', abrirInvitacion);
+  });
 
