@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombre = nombreElem?.innerText || '';
     const pases  = pasesElem?.innerText.replace('Pases: ', '') || '';
     const msg    = `Hola, soy ${nombre} y confirmo mi asistencia con ${pases} pases para la fiesta de quince años.`;
-    window.open(`https://api.whatsapp.com/send?phone=50236011737&text=${encodeURIComponent(msg)}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=50247696714&text=${encodeURIComponent(msg)}`, '_blank');
   }
   
   function elegirAplicacion() {
