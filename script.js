@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // 2. Contador regresivo hasta la fecha del evento
   function iniciarContador() {
-    const fechaEvento = new Date('August 02, 2025 00:00:00').getTime();
+    const fechaEvento = new Date('August 02, 2026 00:00:00').getTime();
     setInterval(() => {
       const ahora     = Date.now();
       const diff      = fechaEvento - ahora;
@@ -92,12 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const nombre = nombreElem?.innerText || '';
     const pases  = pasesElem?.innerText.replace('Pases: ', '') || '';
     const msg    = `Hola, soy ${nombre} y confirmo mi asistencia con ${pases} pases para la fiesta de quince años.`;
-    window.open(`https://api.whatsapp.com/send?phone=50247696714&text=${encodeURIComponent(msg)}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=50236011737&text=${encodeURIComponent(msg)}`, '_blank');
   }
   
   function elegirAplicacion() {
-    window.open('https://maps.app.goo.gl/dfD9cMEbSAdn56qV8','_blank');
-    setTimeout(() => window.open('https://waze.com/ul?ll=14.558065,-90.729567&navigate=yes','_blank'),1000);
+    window.open('https://maps.app.goo.gl/ngvZ8P1KsVggQqAJ6','_blank');
+    setTimeout(() => window.open('https://www.waze.com/en/live-map/directions/iglesia-yurrita-ruta-6-zona-4,-guatemala?place=w.176619666.1766065590.408410','_blank'),1000);
   }
   function elegirAplicacionOtraDireccion() {
     window.open('https://maps.app.goo.gl/x1VEyzHxdwP7FMkX6','_blank');
